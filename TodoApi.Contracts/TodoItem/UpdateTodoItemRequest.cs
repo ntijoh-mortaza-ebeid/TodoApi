@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TodoApi.Contracts;
-
+﻿namespace TodoApi.Contracts;
 
 public record UpdateTodoItemRequest
 {
