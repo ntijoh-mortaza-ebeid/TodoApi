@@ -31,7 +31,7 @@ public class TodoItemsController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetTodoItem(Guid id)
     {
-        TodoItem todoItem = await _context.TodoItems.FindAsync(id);
+        TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
 
         if (todoItem == null)
         {
@@ -47,16 +47,23 @@ public class TodoItemsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> PutTodoItem(Guid id, UpsertTodoItemRequest request)
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> PatchTodoItem(Guid id, UpdateTodoItemRequest request)
     {
-        var todoItem = new TodoItem(
-            id,
-            request.Name,
-            request.IsComplete
-        );
+        var currentTodoItem = await _context.TodoItems.FindAsync(id);
+        if (currentTodoItem == null)
+        {
+            return NotFound();
+        }
 
-        _context.Entry(todoItem).State = EntityState.Modified;
+        var newTodoItem = new TodoItem
+        {
+            Id = currentTodoItem.Id,
+            Name = request.Name ?? currentTodoItem.Name,
+            IsComplete = request.IsComplete ?? currentTodoItem.IsComplete
+        };
+
+        _context.Entry(currentTodoItem).CurrentValues.SetValues(newTodoItem);
 
         try
         {
@@ -80,11 +87,11 @@ public class TodoItemsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TodoItem>> PostTodoItem(CreateTodoItemRequest request)
     {
-        var todoItem = new TodoItem(
-            Guid.NewGuid(),
-            request.Name,
-            false
-        );
+        var todoItem = new TodoItem
+        {
+            Name = request.Name,
+            IsComplete = request.IsComplete
+        };
 
         _context.TodoItems.Add(todoItem);
         await _context.SaveChangesAsync();
@@ -92,7 +99,8 @@ public class TodoItemsController : ControllerBase
         return CreatedAtAction(
             actionName: "GetTodoItem",
             routeValues: new { id = todoItem.Id },
-            value: todoItem);
+            value: todoItem
+        );
     }
 
     // DELETE: api/TodoItems/5

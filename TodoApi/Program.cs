@@ -14,7 +14,6 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapGet("/", () => "Hello world!");
     app.UseSwagger();
     app.UseSwaggerUI();
 }

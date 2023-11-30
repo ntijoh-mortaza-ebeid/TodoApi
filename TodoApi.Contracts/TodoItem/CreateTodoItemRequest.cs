@@ -1,5 +1,6 @@
 ﻿namespace TodoApi.Contracts;
 
 public record CreateTodoItemRequest(
-    string Name
+    string Name,
+    bool IsComplete = false
 );
