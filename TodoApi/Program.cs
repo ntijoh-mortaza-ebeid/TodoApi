@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 {
     builder.Services.AddControllers();
-    builder.Services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+    builder.Services.AddDbContext<TodoContext>(opt => opt.UseNpgsql("Host=localhost;Database=pg-docker;Username=postgres;Password=docker"));
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 }

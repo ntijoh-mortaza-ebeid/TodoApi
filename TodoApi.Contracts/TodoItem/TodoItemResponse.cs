@@ -1,7 +1,7 @@
 ﻿namespace TodoApi.Contracts.TodoItem;
 
 public record TodoItemResponse(
-    Guid Id,
+    long Id,
     string Name,
     bool IsComplete
 );

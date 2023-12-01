@@ -28,8 +28,8 @@ public class TodoItemsController : ControllerBase
         return Ok(await _context.TodoItems.ToListAsync());
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetTodoItem(Guid id)
+    [HttpGet("{id:long}")]
+    public async Task<IActionResult> GetTodoItem(long id)
     {
         TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
 
@@ -47,8 +47,8 @@ public class TodoItemsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> PatchTodoItem(Guid id, UpdateTodoItemRequest request)
+    [HttpPatch("{id:long}")]
+    public async Task<IActionResult> PatchTodoItem(long id, UpdateTodoItemRequest request)
     {
         var currentTodoItem = await _context.TodoItems.FindAsync(id);
         if (currentTodoItem == null)
@@ -104,8 +104,8 @@ public class TodoItemsController : ControllerBase
     }
 
     // DELETE: api/TodoItems/5
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteTodoItem(Guid id)
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> DeleteTodoItem(long id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
         if (todoItem == null)
@@ -119,7 +119,7 @@ public class TodoItemsController : ControllerBase
         return NoContent();
     }
 
-    private bool TodoItemExists(Guid id)
+    private bool TodoItemExists(long id)
     {
         return _context.TodoItems.Any(e => e.Id == id);
     }
