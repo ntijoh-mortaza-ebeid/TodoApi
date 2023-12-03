@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using TodoApi.Models;
 
 namespace TodoApi.Models;
 
@@ -9,4 +10,6 @@ public class TodoContext : DbContext
     }
 
     public DbSet<TodoItem> TodoItems { get; set; }
+
+public DbSet<TodoApi.Models.Comment> Comment { get; set; } = default!;
 }

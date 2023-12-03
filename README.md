@@ -18,7 +18,7 @@ dotnet tool uninstall -g dotnet-aspnet-codegenerator
 dotnet tool install -g dotnet-aspnet-codegenerator
 dotnet tool update -g dotnet-aspnet-codegenerator
 ```
-- Scaffold a controller `dotnet aspnet-codegenerator controller -name [CONTROLLER_NAME] -async -api -m [MODEL_CLASS_NAME] -dc [DB_CONTEXT_CLASS] -outDir Controllers`
+- Scaffold a controller `dotnet aspnet-codegenerator --project TodoApi controller -name [CONTROLLER_NAME] -async -api -m [MODEL_CLASS_NAME] -dc [DB_CONTEXT_CLASS] -outDir Controllers`
 - More information [here](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/tools/dotnet-aspnet-codegenerator?view=aspnetcore-8.0#controller-options)
 
 #### Run DB migration files:

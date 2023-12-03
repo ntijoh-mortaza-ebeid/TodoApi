@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using TodoApi.Contracts;
+using TodoApi.Contracts.TodoItem;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace TodoApi.Controllers;
@@ -23,7 +23,7 @@ public class TodoItemsController : ControllerBase
         _context = context;
     }
 
-    [HttpGet(Name="getAllTodoItems")]
+    [HttpGet(Name = "getAllTodoItems")]
     [SwaggerOperation(Description = "Gets all todo items")]
     [ProducesResponseType(typeof(List<TodoItem>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<TodoItemResponse>>> GetTodoItems()
@@ -31,7 +31,7 @@ public class TodoItemsController : ControllerBase
         return Ok(await _context.TodoItems.ToListAsync());
     }
 
-    [HttpGet(template:"{id:long}", Name="getTodoItemById")]
+    [HttpGet(template: "{id:long}", Name = "getTodoItemById")]
     [SwaggerOperation(Description = "Returns a todo item given an id")]
     [ProducesResponseType(typeof(TodoItemResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -93,8 +93,8 @@ public class TodoItemsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost(Name = "postTodoItemById")]
-    [SwaggerOperation(Description = "Creates a todo item given a Name and an optional IsComplete")]
+    [HttpPost(Name = "postTodoItem")]
+    [SwaggerOperation(Description = "Creates a todo item")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]CreateTodoItemRequest request)
     {
@@ -110,8 +110,7 @@ public class TodoItemsController : ControllerBase
         return CreatedAtAction(
             actionName: "GetTodoItem",
             routeValues: new { id = todoItem.Id },
-            value: todoItem
-        );
+            value: todoItem);
     }
 
     [HttpDelete(template: "{id:long}", Name = "deleteTodoItemById")]
