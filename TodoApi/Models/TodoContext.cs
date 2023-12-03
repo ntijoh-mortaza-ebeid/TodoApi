@@ -8,5 +8,5 @@ public class TodoContext : DbContext
     {
     }
 
-    public DbSet<TodoItem> TodoItems { get; set; } = null!; // TODO is this null really needed?
+    public DbSet<TodoItem> TodoItems { get; set; }
 }
