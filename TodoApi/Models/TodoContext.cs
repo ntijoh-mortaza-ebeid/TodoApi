@@ -9,7 +9,7 @@ public class TodoContext : DbContext
     {
     }
 
-    public DbSet<TodoItem> TodoItems { get; set; }
+    public DbSet<TodoItem> TodoItems { get; set; } = null!;
 
-public DbSet<TodoApi.Models.Comment> Comment { get; set; } = default!;
+    public DbSet<TodoApi.Models.Comment> Comment { get; set; } = default!;
 }
