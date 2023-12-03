@@ -1,4 +1,4 @@
-﻿namespace TodoApi.Contracts.TodoItem;
+﻿namespace TodoApi.Contracts;
 
 public record TodoItemResponse(
     long Id,

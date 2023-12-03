@@ -2,5 +2,5 @@
 
 public record CreateTodoItemRequest(
     string Name,
-    bool IsComplete = false
+    bool? IsComplete
 );

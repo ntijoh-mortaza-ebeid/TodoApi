@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-using TodoApi.Contracts.TodoItem;
 using TodoApi.Contracts;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace TodoApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class TodoItemsController : ControllerBase
 {
     private readonly TodoContext _context;
@@ -22,14 +23,19 @@ public class TodoItemsController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
+    [HttpGet(Name="getAllTodoItems")]
+    [SwaggerOperation(Description = "Gets all todo items")]
+    [ProducesResponseType(typeof(List<TodoItem>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<TodoItemResponse>>> GetTodoItems()
     {
         return Ok(await _context.TodoItems.ToListAsync());
     }
 
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetTodoItem(long id)
+    [HttpGet(template:"{id:long}", Name="getTodoItemById")]
+    [SwaggerOperation(Description = "Returns a todo item given an id")]
+    [ProducesResponseType(typeof(TodoItemResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetTodoItem([FromRoute]long id)
     {
         TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
 
@@ -47,8 +53,11 @@ public class TodoItemsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch("{id:long}")]
-    public async Task<IActionResult> PatchTodoItem(long id, UpdateTodoItemRequest request)
+    [HttpPatch(template: "{id:long}", Name = "patchTodoItemById")]
+    [SwaggerOperation(Description = "Patches a todo item given an id and requested changes")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> PatchTodoItem([FromRoute]long id, [FromBody]UpdateTodoItemRequest request)
     {
         var currentTodoItem = await _context.TodoItems.FindAsync(id);
         if (currentTodoItem == null)
@@ -84,13 +93,15 @@ public class TodoItemsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost]
-    public async Task<ActionResult<TodoItem>> PostTodoItem(CreateTodoItemRequest request)
+    [HttpPost(Name = "postTodoItemById")]
+    [SwaggerOperation(Description = "Creates a todo item given a Name and an optional IsComplete")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]CreateTodoItemRequest request)
     {
         var todoItem = new TodoItem
         {
             Name = request.Name,
-            IsComplete = request.IsComplete
+            IsComplete = request.IsComplete ?? false
         };
 
         _context.TodoItems.Add(todoItem);
@@ -103,9 +114,11 @@ public class TodoItemsController : ControllerBase
         );
     }
 
-    // DELETE: api/TodoItems/5
-    [HttpDelete("{id:long}")]
-    public async Task<IActionResult> DeleteTodoItem(long id)
+    [HttpDelete(template: "{id:long}", Name = "deleteTodoItemById")]
+    [SwaggerOperation(Description = "Deletes a todo item given an id")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteTodoItem([FromRoute]long id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
         if (todoItem == null)
