@@ -1,7 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
-    todo: string
-}>();
+const props = defineProps(["todo"]);
 </script>
 
 <template>
