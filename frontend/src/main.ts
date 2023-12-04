@@ -6,4 +6,4 @@ const Appp = createApp(App);
 
 registerPlugins(Appp);
 
-Appp.mount("#app");
+Appp.mount("#appp");

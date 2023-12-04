@@ -1,14 +1,21 @@
 #!/bin/sh
 echo ">> RUNNING pre-commit GITHOOK in .githooks/"
+
+# Select all git added files
 FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'frontend.*')
 [ -z "$FILES" ] && exit 0
 
-# Prettify all selected files
+# Run Prettier on all selected files
 echo ">> RUNNING PRETTIER"
-echo "$FILES" | xargs ./Frontend/node_modules/.bin/prettier --ignore-unknown --write
+echo "$FILES" | xargs ./frontend/node_modules/.bin/prettier --ignore-unknown --write
 echo ">> FINISHED PRETTIER"
 
-# Add back the modified/prettified files to staging
+# Run ESLint on all selected files
+echo ">> RUNNING ESLINT"
+echo "$FILES" | xargs ./frontend/node_modules/.bin/eslint --fix
+echo ">> FINISHED ESLINT"
+
+# Add back the modified files to staging
 echo "$FILES" | xargs git add
 
 exit 0
