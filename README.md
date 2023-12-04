@@ -2,6 +2,9 @@
 TodoListApi MVC Backend in ASP.Net Core
 
 ## For Developers
+### FRONTEND
+
+### BACKEND
 #### Adding certificate for HTTPS on localhost (try if https isn't working after running)
 - Add Certificate `dotnet dev-certs https --trust`
 
