@@ -1,6 +1,6 @@
 Write-Host ">> RUNNING pre-commit GITHOOK in .githooksWindows/"
  
-$FILES = (git diff --cached --name-only --diff-filter=ACMR | ForEach-Object { $_ -replace " ", "\ " } | Select-String -Pattern 'Frontend.*').Matches.Value
+$FILES = (git diff --cached --name-only --diff-filter=ACMR | ForEach-Object { $_ -replace " ", "\ " } | Select-String -Pattern 'frontend.*').Matches.Value
 if ([string]::IsNullOrEmpty($FILES)) { exit 0 }
  
 # Prettify all selected files

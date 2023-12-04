@@ -1,6 +1,6 @@
 #!/bin/sh
 echo ">> RUNNING pre-commit GITHOOK in .githooks/"
-FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'Frontend.*')
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'frontend.*')
 [ -z "$FILES" ] && exit 0
 
 # Prettify all selected files
